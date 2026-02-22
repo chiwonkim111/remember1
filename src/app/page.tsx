@@ -10,7 +10,7 @@ import AiSyncScreen from "@/components/AiSyncScreen";
 import { ChevronLeft, Bell } from "lucide-react";
 
 const NAV_TITLES = ['내 프로필', '프로필 다이어리', 'Q1 성과 체크인', '내 시장가치', '동료 상호 인증', 'AI 로그 동기화'];
-const NAV_ACTIONS = ['편집', '', '', '', '', '동기화'];
+const NAV_ACTIONS = ['', '', '', '', '', '동기화'];
 
 export default function Home() {
   const [currentScreen, setCurrentScreen] = useState(1);
@@ -62,19 +62,21 @@ export default function Home() {
 
       {/* Nav Bar */}
       <div className="h-[52px] bg-white flex items-center px-4 border-b border-[#E8E8E8] shrink-0 relative z-40">
+        {/* 좌측: 뒤로가기 (고정 너비 w-10) */}
         <div
-          className="w-8 h-8 flex items-center justify-center cursor-pointer"
+          className="w-10 h-8 flex items-center justify-start cursor-pointer"
           onClick={goBack}
           style={{ visibility: isBackVisible ? 'visible' : 'hidden' }}
         >
           <ChevronLeft className="w-5 h-5 text-black" strokeWidth={2.5} />
         </div>
+        {/* 중앙: 타이틀 */}
         <div className="flex-1 text-center text-[15px] font-bold text-black tracking-tight">
           {NAV_TITLES[currentScreen]}
         </div>
-        <div className="flex items-center gap-2">
-          {/* 메인 화면에서만 벨 표시 */}
-          {isMainScreen && (
+        {/* 우측: 벨(메인) 또는 액션텍스트(서브) — 고정 너비 w-10 */}
+        <div className="w-10 h-8 flex items-center justify-end">
+          {isMainScreen ? (
             <button
               className="w-8 h-8 flex items-center justify-center cursor-pointer relative"
               onClick={() => setShowBellModal(true)}
@@ -82,10 +84,11 @@ export default function Home() {
               <Bell className="w-[18px] h-[18px] text-black" />
               <div className="absolute top-[6px] right-[5px] w-[6px] h-[6px] bg-[#FE5314] rounded-full" />
             </button>
+          ) : (
+            <span className="text-[13px] font-bold text-[#FE5314] cursor-pointer uppercase tracking-wide">
+              {NAV_ACTIONS[currentScreen]}
+            </span>
           )}
-          <div className="text-[13px] font-bold text-[#FE5314] cursor-pointer w-10 text-right uppercase tracking-wide">
-            {NAV_ACTIONS[currentScreen]}
-          </div>
         </div>
       </div>
 
