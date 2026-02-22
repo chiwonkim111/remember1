@@ -5,6 +5,16 @@ import { useState } from "react";
 export default function PeerScreen() {
   const [showModal, setShowModal] = useState(false);
   const [requested, setRequested] = useState<Set<string>>(new Set());
+  const [showRequestedMsg, setShowRequestedMsg] = useState(false);
+
+  const handleRequest = (name: string) => {
+    setRequested(prev => new Set(prev).add(name));
+  };
+
+  const handleComplete = () => {
+    setShowModal(false);
+    if (requested.size > 0) setShowRequestedMsg(true);
+  };
 
   return (
     <div className="flex-1 h-full overflow-y-auto no-scrollbar bg-[#F5F5F5]">
@@ -32,6 +42,19 @@ export default function PeerScreen() {
             </div>
           ))}
         </div>
+
+        {/* 요청 완료 안내 메시지 */}
+        {showRequestedMsg && (
+          <div className="mx-4 mt-3 bg-black rounded-lg p-3.5 flex items-start gap-3">
+            <div className="text-[20px] shrink-0">✓</div>
+            <div>
+              <div className="text-[13px] font-black text-white mb-0.5">인증 요청이 전송됐어요</div>
+              <div className="text-[11px] text-white/50 leading-snug">
+                리멤버 앱 알림과 문자로 안내가 발송됩니다. 동료가 인증을 완료하면 여기에 표시돼요.
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Info */}
         <div className="mx-4 mt-3 border-l-2 border-[#FE5314] pl-3 py-1">
@@ -113,10 +136,7 @@ export default function PeerScreen() {
       {/* Request Modal */}
       {showModal && (
         <div className="absolute inset-0 bg-black/60 z-50 flex items-end" onClick={() => setShowModal(false)}>
-          <div
-            className="w-full bg-white rounded-t-lg px-5 pb-8 animate-slide-up"
-            onClick={e => e.stopPropagation()}
-          >
+          <div className="w-full bg-white rounded-t-lg px-5 pb-8 animate-slide-up" onClick={e => e.stopPropagation()}>
             <div className="w-8 h-[3px] bg-[#E0E0E0] rounded-full mx-auto mt-4 mb-5" />
             <div className="text-[10px] font-black text-[#AAAAAA] uppercase tracking-widest mb-1">동료 인증 요청</div>
             <div className="text-[18px] font-black text-black tracking-tight mb-4">추천 동료 선택</div>
@@ -145,7 +165,7 @@ export default function PeerScreen() {
                   ) : (
                     <button
                       className="bg-[#FE5314] text-white text-[12px] font-black px-3 py-1.5 rounded cursor-pointer active:opacity-80 shrink-0"
-                      onClick={() => setRequested(prev => new Set(prev).add(person.key))}
+                      onClick={() => handleRequest(person.key)}
                     >
                       요청
                     </button>
@@ -154,9 +174,15 @@ export default function PeerScreen() {
               ))}
             </div>
 
+            {requested.size > 0 && (
+              <div className="mb-3 text-[12px] text-[#666666] text-center leading-snug">
+                요청 완료 후 리멤버 앱 알림과 문자로 동료에게 안내가 발송됩니다
+              </div>
+            )}
+
             <button
-              className="w-full bg-black text-white text-[15px] font-black py-4 rounded cursor-pointer active:opacity-80 tracking-tight"
-              onClick={() => setShowModal(false)}
+              className="w-full bg-black text-white text-[15px] font-black py-4 rounded cursor-pointer active:opacity-80"
+              onClick={handleComplete}
             >
               {requested.size > 0 ? `${requested.size}명 요청 완료 ✓` : '완료'}
             </button>
@@ -164,10 +190,6 @@ export default function PeerScreen() {
         </div>
       )}
 
-      <style jsx>{`
-        .animate-slide-up { animation: slideUp 0.28s cubic-bezier(0.22, 1, 0.36, 1); }
-        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-      `}</style>
     </div>
   );
 }
