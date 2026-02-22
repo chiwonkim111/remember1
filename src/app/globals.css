@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+@theme {
+  /* Main color: Black */
+  --color-brand-primary: #000000;
+  --color-brand-primary-soft: #F2F2F2;
+  --color-brand-primary-mid: #DEDEDE;
+
+  /* Sub/accent color: #FE5314 — replaces all green, orange, red */
+  --color-brand-green: #FE5314;
+  --color-brand-green-soft: #FFF1EC;
+  --color-brand-orange: #FE5314;
+  --color-brand-orange-soft: #FFF1EC;
+  --color-brand-red: #FE5314;
+  --color-brand-red-soft: #FFF1EC;
+
+  /* Surfaces */
+  --color-surface-bg: #F5F5F5;
+  --color-surface-card: #FFFFFF;
+  --color-surface-border: #E0E0E0;
+  --color-surface-border2: #EBEBEB;
+
+  /* Text */
+  --color-text-main: #000000;
+  --color-text-second: #666666;
+  --color-text-third: #AAAAAA;
+
+  /* Radius — sharp editorial */
+  --radius-xl: 8px;
+  --radius-lg: 4px;
+}
+
+@layer base {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background-color: #111111;
+    color: var(--color-text-main);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+}
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
